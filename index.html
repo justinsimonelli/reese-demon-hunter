@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Reese: Demon Hunter</title>
+    <!-- iOS Full Screen Web App -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Demon Hunter">
+    <!-- Android Full Screen -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1a1a2e">
     <!-- Google Font - stylized K-pop look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -364,6 +371,18 @@
             'images/demon4.png'
         ];
 
+        // Request fullscreen
+        function requestFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { // Safari/iOS
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { // IE/Edge
+                elem.msRequestFullscreen();
+            }
+        }
+
         // Start music
         function startMusic() {
             backgroundMusic.currentTime = 0;
@@ -613,6 +632,9 @@
         startButton.addEventListener('click', startGame);
 
         function startGame() {
+            // Request fullscreen (works on desktop, ignored if not supported)
+            requestFullscreen();
+
             // Reset game state
             gameState.demonsDefeated = 0;
             updateScore();
