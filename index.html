@@ -8,9 +8,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Demon Hunter">
+    <link rel="apple-touch-icon" href="images/reese-headon.png">
     <!-- Android Full Screen -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1a1a2e">
+    <link rel="icon" type="image/png" href="images/reese-headon.png">
     <!-- Google Font - stylized K-pop look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -337,7 +339,7 @@
     </div>
 
     <!-- Background Music -->
-    <audio id="background-music" loop>
+    <audio id="background-music">
         <source src="golden.mp3" type="audio/mpeg">
     </audio>
 
@@ -371,29 +373,37 @@
             'images/demon4.png'
         ];
 
-        // Request fullscreen
+        // Request fullscreen (skip on iOS - use Add to Home Screen instead)
         function requestFullscreen() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            if (isIOS) return; // iOS uses Add to Home Screen for fullscreen
+
             const elem = document.documentElement;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { // Safari/iOS
-                elem.webkitRequestFullscreen();
             } else if (elem.msRequestFullscreen) { // IE/Edge
                 elem.msRequestFullscreen();
             }
         }
 
-        // Start music
+        // Start music (only if not already playing)
         function startMusic() {
-            backgroundMusic.currentTime = 0;
-            backgroundMusic.play();
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+            }
         }
 
         // Stop music
         function stopMusic() {
             backgroundMusic.pause();
-            backgroundMusic.currentTime = 0;
         }
+
+        // Pause/resume music when app is minimized or tab hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                backgroundMusic.pause();
+            }
+        });
 
         // Spawn demons at random positions
         function spawnDemons() {
