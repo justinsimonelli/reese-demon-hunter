@@ -53,7 +53,18 @@
             justify-content: center;
             align-items: center;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.5);
+        }
+
+        #start-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/huntrix.jpeg') center center / cover no-repeat;
+            filter: blur(2.3px) brightness(0.7);
+            z-index: -1;
         }
 
         #start-screen h1 {
@@ -89,6 +100,87 @@
         #start-button:active {
             transform: scale(1.1);
             box-shadow: 0 15px 40px rgba(196, 69, 105, 0.6);
+        }
+
+        /* Mode Selection Screen */
+        #mode-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        #mode-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/huntrix.jpeg') center center / cover no-repeat;
+            filter: blur(2.3px) brightness(0.7);
+            z-index: -1;
+        }
+
+        #mode-screen h2 {
+            color: #fff;
+            font-family: 'Bangers', sans-serif;
+            font-size: 2.5rem;
+            text-shadow: 0 0 20px #ff6b9d;
+            margin-bottom: 40px;
+        }
+
+        .mode-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .mode-btn {
+            padding: 25px 50px;
+            font-size: 1.8rem;
+            font-family: 'Bangers', sans-serif;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            min-width: 280px;
+        }
+
+        #demon-mode-btn {
+            background: linear-gradient(45deg, #ff6b9d, #c44569);
+            color: white;
+            box-shadow: 0 10px 30px rgba(196, 69, 105, 0.4);
+        }
+
+        #dance-mode-btn {
+            background: linear-gradient(45deg, #9c27b0, #673ab7);
+            color: white;
+            box-shadow: 0 10px 30px rgba(156, 39, 176, 0.4);
+        }
+
+        #soda-mode-btn {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+        }
+
+        .mode-btn:hover,
+        .mode-btn:active {
+            transform: scale(1.1);
+        }
+
+        .mode-description {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 5px;
         }
 
         /* Game Screen (hidden initially) */
@@ -164,7 +256,9 @@
             max-width: 250px;
             z-index: 10;
             filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.8));
-            transition: left 0.25s ease-out, bottom 0.25s ease-out, transform 0.25s ease-out;
+            transition: left 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        bottom 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
         #hero-action.idle {
@@ -172,7 +266,7 @@
         }
 
         #hero-action.attacking {
-            animation: heroAttack 0.3s ease-out;
+            animation: heroAttack 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         @keyframes heroIdle {
@@ -181,9 +275,9 @@
         }
 
         @keyframes heroAttack {
-            0% { transform: translateX(-50%) scale(1); }
-            50% { transform: translateX(-50%) scale(1.2); filter: drop-shadow(0 0 40px rgba(255, 235, 59, 1)); }
-            100% { transform: translateX(-50%) scale(1); }
+            0% { transform: translateX(-50%) scale(1); filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.8)); }
+            40% { transform: translateX(-50%) scale(1.3); filter: drop-shadow(0 0 50px rgba(255, 235, 59, 1)); }
+            100% { transform: translateX(-50%) scale(1); filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.8)); }
         }
 
         /* Demon Sprites */
@@ -207,7 +301,7 @@
         }
 
         .demon.defeated {
-            animation: demonDefeat 0.4s ease-out forwards;
+            animation: demonDefeat 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
             pointer-events: none;
         }
 
@@ -218,25 +312,26 @@
         }
 
         @keyframes demonDefeat {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.8; filter: brightness(3); }
-            100% { transform: scale(0); opacity: 0; }
+            0% { transform: scale(1); opacity: 1; filter: brightness(1); }
+            30% { transform: scale(1.4); opacity: 1; filter: brightness(3) saturate(2); }
+            100% { transform: scale(0); opacity: 0; filter: brightness(3); }
         }
 
         /* Hit sparkle effect */
         .sparkle {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             background: radial-gradient(circle, #ffeb3b 0%, #ff9800 50%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
-            animation: sparkleAnim 0.6s ease-out forwards;
+            animation: sparkleAnim 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
         @keyframes sparkleAnim {
             0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; }
+            60% { opacity: 1; }
+            100% { transform: scale(3.5); opacity: 0; }
         }
 
         /* Win Screen (hidden initially) */
@@ -288,6 +383,13 @@
             margin-bottom: 30px;
         }
 
+        .win-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
         #play-again-button {
             padding: 20px 50px;
             font-size: 1.8rem;
@@ -308,9 +410,325 @@
             box-shadow: 0 15px 40px rgba(255, 152, 0, 0.7);
         }
 
+        #harder-button {
+            padding: 15px 40px;
+            font-size: 1.4rem;
+            font-family: 'Bangers', sans-serif;
+            background: linear-gradient(45deg, #00e676, #00bfa5);
+            color: #1a1a2e;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 230, 118, 0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #harder-button:hover,
+        #harder-button:active {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(0, 230, 118, 0.7);
+        }
+
+        #home-button {
+            padding: 12px 35px;
+            font-size: 1.2rem;
+            font-family: 'Bangers', sans-serif;
+            background: linear-gradient(45deg, #ab47bc, #7c4dff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(171, 71, 188, 0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+            -webkit-tap-highlight-color: transparent;
+            margin-top: 10px;
+        }
+
+        #home-button:hover,
+        #home-button:active {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(171, 71, 188, 0.7);
+        }
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
+        }
+
+        /* Dance Mode Styles */
+        .dance-target {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .dance-target.active {
+            opacity: 1;
+            transform: scale(1);
+            animation: danceGlow 0.5s ease-in-out infinite;
+            box-shadow: 0 0 40px #ffeb3b, 0 0 80px #ff9800, 0 0 120px #ff6b9d;
+        }
+
+        .dance-target.waiting {
+            opacity: 0.3;
+            transform: scale(0.8);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .dance-target.hit-perfect {
+            animation: perfectHit 0.4s ease-out forwards;
+        }
+
+        .dance-target.hit-good {
+            animation: goodHit 0.4s ease-out forwards;
+        }
+
+        @keyframes danceGlow {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 40px #ffeb3b, 0 0 80px #ff9800;
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 60px #ffeb3b, 0 0 100px #ff9800, 0 0 140px #ff6b9d;
+            }
+        }
+
+        @keyframes perfectHit {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.8; filter: brightness(2) hue-rotate(60deg); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        @keyframes goodHit {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.8; filter: brightness(1.5); }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* Dance feedback messages */
+        .dance-feedback {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bangers', sans-serif;
+            font-size: 4rem;
+            pointer-events: none;
+            z-index: 100;
+            animation: feedbackPop 0.6s ease-out forwards;
+        }
+
+        .dance-feedback.perfect {
+            color: #ffeb3b;
+            text-shadow: 0 0 30px #ffeb3b, 0 0 60px #ff9800;
+        }
+
+        .dance-feedback.good {
+            color: #4caf50;
+            text-shadow: 0 0 30px #4caf50, 0 0 60px #8bc34a;
+        }
+
+        .dance-feedback.nice {
+            color: #00bcd4;
+            text-shadow: 0 0 30px #00bcd4;
+        }
+
+        @keyframes feedbackPop {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            30% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+            100% { transform: translate(-50%, -60%) scale(1); opacity: 0; }
+        }
+
+        /* Dance score/combo display */
+        #dance-combo {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Bangers', sans-serif;
+            font-size: 1.5rem;
+            color: #ffeb3b;
+            text-shadow: 0 0 20px #ffeb3b;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        #dance-combo.visible {
+            opacity: 1;
+            animation: comboPulse 0.3s ease-out;
+        }
+
+        @keyframes comboPulse {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        /* Beat indicator ring */
+        .beat-ring {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 4px solid rgba(255, 235, 59, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: beatRingPulse 0.5s ease-out forwards;
+        }
+
+        @keyframes beatRingPulse {
+            0% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+        }
+
+        /* Soda POP! Bubble Styles */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(255, 105, 180, 0.9) 25%,
+                rgba(255, 20, 147, 1) 60%,
+                rgba(255, 0, 128, 1) 100%);
+            box-shadow:
+                0 0 30px rgba(255, 105, 180, 0.9),
+                0 0 60px rgba(255, 20, 147, 0.7),
+                0 0 90px rgba(255, 0, 128, 0.5),
+                inset 0 0 30px rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            animation:
+                bubbleGrow var(--grow-duration, 5s) ease-in forwards,
+                bubblePulse 0.6s ease-in-out infinite,
+                bubbleShimmer 2s linear infinite;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .bubble::before {
+            content: '';
+            position: absolute;
+            top: 12%;
+            left: 15%;
+            width: 30%;
+            height: 30%;
+            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 50%, transparent 70%);
+            border-radius: 50%;
+            animation: sparkleShine 1.5s ease-in-out infinite;
+        }
+
+        .bubble::after {
+            content: '';
+            position: absolute;
+            bottom: 15%;
+            right: 20%;
+            width: 15%;
+            height: 15%;
+            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: sparkleShine 1.5s ease-in-out infinite 0.5s;
+        }
+
+        .bubble.popped {
+            animation: bubblePop 0.3s ease-out forwards;
+        }
+
+        @keyframes bubbleGrow {
+            0% { transform: scale(0.3); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bubblePulse {
+            0%, 100% {
+                box-shadow:
+                    0 0 30px rgba(255, 105, 180, 0.9),
+                    0 0 60px rgba(255, 20, 147, 0.7),
+                    0 0 90px rgba(255, 0, 128, 0.5),
+                    inset 0 0 30px rgba(255, 255, 255, 0.5);
+            }
+            50% {
+                box-shadow:
+                    0 0 50px rgba(255, 105, 180, 1),
+                    0 0 80px rgba(255, 20, 147, 0.9),
+                    0 0 120px rgba(255, 0, 128, 0.7),
+                    inset 0 0 40px rgba(255, 255, 255, 0.7);
+            }
+        }
+
+        @keyframes bubbleShimmer {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            50% { filter: hue-rotate(15deg) brightness(1.1); }
+            100% { filter: hue-rotate(0deg) brightness(1); }
+        }
+
+        @keyframes sparkleShine {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes bubblePop {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.5; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* Hurt effect */
+        .hurt-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.4);
+            pointer-events: none;
+            z-index: 150;
+            animation: hurtFlash 0.4s ease-out forwards;
+        }
+
+        @keyframes hurtFlash {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .hurt-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bangers', sans-serif;
+            font-size: 5rem;
+            color: #ff1744;
+            text-shadow:
+                0 0 20px #ff1744,
+                0 0 40px #d50000,
+                3px 3px 0 #fff;
+            pointer-events: none;
+            z-index: 160;
+            animation: hurtTextPop 0.6s ease-out forwards;
+        }
+
+        @keyframes hurtTextPop {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-10deg); opacity: 0; }
+            30% { transform: translate(-50%, -50%) scale(1.3) rotate(5deg); opacity: 1; }
+            100% { transform: translate(-50%, -70%) scale(1) rotate(0deg); opacity: 0; }
+        }
+
+        /* Soda POP score display */
+        #lives-display {
+            color: #ff69b4;
+            font-size: 1.8rem;
+            font-weight: bold;
+            font-family: 'Bangers', sans-serif;
+            text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
         }
     </style>
 </head>
@@ -322,12 +740,32 @@
         <button id="start-button">PLAY!</button>
     </div>
 
+    <!-- Mode Selection Screen -->
+    <div id="mode-screen">
+        <h2>Choose Your Mode!</h2>
+        <div class="mode-buttons">
+            <button id="demon-mode-btn" class="mode-btn">
+                DEMON HUNTER
+                <div class="mode-description">Tap all the demons!</div>
+            </button>
+            <button id="dance-mode-btn" class="mode-btn">
+                DANCE BATTLE
+                <div class="mode-description">Dance to the beat!</div>
+            </button>
+            <button id="soda-mode-btn" class="mode-btn">
+                SODA POP!
+                <div class="mode-description">Pop the bubbles!</div>
+            </button>
+        </div>
+    </div>
+
     <!-- Game Screen -->
     <div id="game-screen">
         <div id="hud">
             <div id="timer-display">60s</div>
             <div id="score-display">Demons: 0 / 10</div>
         </div>
+        <div id="dance-combo"></div>
         <div id="demon-container"></div>
         <img id="hero-action" src="images/reese-action.png" alt="Reese attacking">
     </div>
@@ -335,14 +773,24 @@
     <!-- Win Screen -->
     <div id="win-screen">
         <h1>You defeated all the demons!</h1>
-        <p>Happy Birthday, Reese!</p>
+        <p id="win-message"></p>
         <img src="images/reese-headon.png" alt="Reese the Champion" class="hero-image">
-        <button id="play-again-button">PLAY AGAIN!</button>
+        <div class="win-buttons">
+            <button id="play-again-button">PLAY AGAIN!</button>
+            <button id="harder-button">FASTER!</button>
+            <button id="home-button">NEW GAME</button>
+        </div>
     </div>
 
     <!-- Background Music -->
     <audio id="background-music">
         <source src="golden.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="dance-music">
+        <source src="how_its_done.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="soda-music">
+        <source src="soda_pop.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -353,19 +801,68 @@
             totalDemons: 10,
             timeRemaining: 60,
             timerInterval: null,
-            demonMoveInterval: null
+            demonMoveInterval: null,
+            // Speed/difficulty multiplier (increases with "FASTER!" button)
+            speedMultiplier: 1,
+            danceHitWindow: 2000, // ms to tap a dance target
+            // Dance mode state
+            gameMode: 'demon', // 'demon', 'dance', or 'soda'
+            danceTargets: [],
+            currentTargetIndex: 0,
+            activationOrder: [], // Random order to light up targets
+            danceBPM: 160,
+            beatInterval: null,
+            combo: 0,
+            maxCombo: 0,
+            danceScore: 0,
+            totalBeats: 20,
+            // Soda POP! state
+            sodaLives: 3,
+            sodaScore: 0,
+            sodaBubblesPopped: 0,
+            sodaTotalBubbles: 15,
+            sodaBubbleInterval: null,
+            sodaGrowDuration: 5000 // ms for bubble to fully grow (generous for kids!)
         };
 
         // DOM Elements
         const startScreen = document.getElementById('start-screen');
+        const modeScreen = document.getElementById('mode-screen');
         const gameScreen = document.getElementById('game-screen');
         const winScreen = document.getElementById('win-screen');
         const startButton = document.getElementById('start-button');
+        const demonModeBtn = document.getElementById('demon-mode-btn');
+        const danceModeBtn = document.getElementById('dance-mode-btn');
+        const sodaModeBtn = document.getElementById('soda-mode-btn');
         const demonContainer = document.getElementById('demon-container');
         const scoreDisplay = document.getElementById('score-display');
         const timerDisplay = document.getElementById('timer-display');
         const heroAction = document.getElementById('hero-action');
+        const danceCombo = document.getElementById('dance-combo');
+        const winMessage = document.getElementById('win-message');
         const backgroundMusic = document.getElementById('background-music');
+        const danceMusic = document.getElementById('dance-music');
+        const sodaMusic = document.getElementById('soda-music');
+
+        // Check if today is her birthday (April 16)
+        function isBirthday() {
+            const today = new Date();
+            return today.getMonth() === 3 && today.getDate() === 16; // Month is 0-indexed
+        }
+
+        function getWinMessage() {
+            if (isBirthday()) {
+                return "Happy Birthday kiddo!";
+            }
+            const messages = [
+                "You're amazing!",
+                "Great job!",
+                "You did it!",
+                "So cool!",
+                "You rock!"
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
 
         // Demon images
         const demonImages = [
@@ -373,6 +870,12 @@
             'images/demon2.png',
             'images/demon3.png',
             'images/demon4.png'
+        ];
+
+        // Dance mode images
+        const danceImages = [
+            'images/bird.png',
+            'images/cat.png'
         ];
 
         // Request fullscreen (skip on iOS - use Add to Home Screen instead)
@@ -399,13 +902,6 @@
         function stopMusic() {
             backgroundMusic.pause();
         }
-
-        // Pause/resume music when app is minimized or tab hidden
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                backgroundMusic.pause();
-            }
-        });
 
         // Spawn demons at random positions
         function spawnDemons() {
@@ -436,8 +932,9 @@
                 demon.style.left = randomX + 'px';
                 demon.style.top = randomY + 'px';
 
-                // Random velocity for movement (speed between 1-3)
-                const speed = 1 + Math.random() * 2;
+                // Random velocity for movement (speed between 1-3, multiplied by difficulty)
+                const baseSpeed = 1 + Math.random() * 2;
+                const speed = baseSpeed * gameState.speedMultiplier;
                 const angle = Math.random() * Math.PI * 2;
                 demon.dataset.vx = Math.cos(angle) * speed;
                 demon.dataset.vy = Math.sin(angle) * speed;
@@ -506,13 +1003,13 @@
         // Create sparkle particles
         function createSparkles(x, y) {
             const colors = ['#ffeb3b', '#ff9800', '#ff6b9d', '#e91e63', '#9c27b0'];
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 10; i++) {
                 const sparkle = document.createElement('div');
                 sparkle.className = 'sparkle';
 
-                // Random offset from center
-                const offsetX = (Math.random() - 0.5) * 100;
-                const offsetY = (Math.random() - 0.5) * 100;
+                // Random offset from center - more spread
+                const offsetX = (Math.random() - 0.5) * 120;
+                const offsetY = (Math.random() - 0.5) * 120;
 
                 sparkle.style.left = (x + offsetX) + 'px';
                 sparkle.style.top = (y + offsetY) + 'px';
@@ -521,7 +1018,7 @@
                 demonContainer.appendChild(sparkle);
 
                 // Remove sparkle after animation
-                setTimeout(() => sparkle.remove(), 600);
+                setTimeout(() => sparkle.remove(), 350);
             }
         }
 
@@ -537,11 +1034,11 @@
             heroAction.style.left = targetX + 'px';
             heroAction.style.bottom = Math.max(20, bottomPos) + 'px';
 
-            // Add attack animation
+            // Add attack animation (faster!)
             heroAction.classList.add('attacking');
             setTimeout(() => {
                 heroAction.classList.remove('attacking');
-            }, 300);
+            }, 180);
         }
 
         // Return hero to center
@@ -550,7 +1047,7 @@
             heroAction.style.bottom = '20px';
             setTimeout(() => {
                 heroAction.classList.add('idle');
-            }, 250);
+            }, 120);
         }
 
         // Defeat a demon when clicked
@@ -572,22 +1069,34 @@
             // Create sparkle particles
             createSparkles(centerX, centerY);
 
+            // Show fun feedback
+            showDemonFeedback();
+
             // Update score
             gameState.demonsDefeated++;
             updateScore();
 
-            // Remove after animation completes
+            // Remove after animation completes (faster timing)
             setTimeout(() => {
                 demon.remove();
 
                 // Check for win
                 if (gameState.demonsDefeated >= gameState.totalDemons) {
-                    setTimeout(showWinScreen, 300);
+                    setTimeout(showWinScreen, 200);
                 } else {
-                    // Return hero to center after short delay
-                    setTimeout(returnHeroToCenter, 100);
+                    // Return hero to center immediately
+                    returnHeroToCenter();
                 }
-            }, 400);
+            }, 250);
+        }
+
+        function showDemonFeedback() {
+            const messages = ['POW!', 'BAM!', 'NICE!', 'GOTCHA!', 'BOOM!', 'YEAH!'];
+            const feedback = document.createElement('div');
+            feedback.className = 'dance-feedback perfect'; // Reuse dance feedback styles
+            feedback.textContent = messages[Math.floor(Math.random() * messages.length)];
+            document.body.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 600);
         }
 
         // Update score display
@@ -640,36 +1149,550 @@
             showWinScreen();
         }
 
-        // Start Game
-        startButton.addEventListener('click', startGame);
+        // Start Game - Show mode selection
+        startButton.addEventListener('click', showModeSelection);
 
-        function startGame() {
+        function showModeSelection() {
+            startScreen.style.display = 'none';
+            modeScreen.style.display = 'flex';
+        }
+
+        // Mode selection handlers (reset speed when starting fresh)
+        demonModeBtn.addEventListener('click', () => {
+            gameState.speedMultiplier = 1;
+            gameState.danceHitWindow = 2000;
+            startGame('demon');
+        });
+        danceModeBtn.addEventListener('click', () => {
+            gameState.speedMultiplier = 1;
+            gameState.danceHitWindow = 2000;
+            startGame('dance');
+        });
+        sodaModeBtn.addEventListener('click', () => {
+            gameState.speedMultiplier = 1;
+            gameState.sodaGrowDuration = 5000;
+            startGame('soda');
+        });
+
+        function startGame(mode) {
+            gameState.gameMode = mode;
+
             // Request fullscreen (works on desktop, ignored if not supported)
             requestFullscreen();
 
             // Reset game state
             gameState.demonsDefeated = 0;
-            updateScore();
+            gameState.combo = 0;
+            gameState.maxCombo = 0;
+            gameState.danceScore = 0;
+            gameState.currentTargetIndex = 0;
 
-            startScreen.style.display = 'none';
+            modeScreen.style.display = 'none';
             gameScreen.style.display = 'block';
 
-            // Start the music
-            startMusic();
+            if (mode === 'demon') {
+                // Original demon hunter mode
+                document.body.style.backgroundImage = "url('images/kpop-background.jpg')";
+                heroAction.style.display = 'block';
+                timerDisplay.style.display = 'block';
+                danceCombo.classList.remove('visible');
+                updateScore();
+                startMusic();
+                startTimer();
+                spawnDemons();
+            } else if (mode === 'dance') {
+                // Dance mode - city background
+                document.body.style.backgroundImage = "url('images/city.png')";
+                heroAction.style.display = 'block';
+                scoreDisplay.textContent = 'Score: 0';
+                timerDisplay.style.display = 'none';
+                danceCombo.classList.remove('visible');
+                startDanceMusic();
+                startDanceMode();
+            } else if (mode === 'soda') {
+                // Soda POP! mode
+                document.body.style.backgroundImage = "url('images/soda_pop.jpg')";
+                heroAction.style.display = 'block'; // Show hero in soda mode too!
+                timerDisplay.style.display = 'none';
+                danceCombo.classList.remove('visible');
+                startSodaMusic();
+                startSodaMode();
+            }
 
-            // Start the timer
-            startTimer();
-
-            // Spawn the demons
-            spawnDemons();
-
-            console.log('Game started!');
+            console.log('Game started in ' + mode + ' mode!');
         }
+
+        // Dance mode music
+        function startDanceMusic() {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+            // Only start if not already playing (keeps music going on replay)
+            if (danceMusic.paused) {
+                danceMusic.play();
+            }
+        }
+
+        function stopDanceMusic() {
+            danceMusic.pause();
+            danceMusic.currentTime = 0;
+        }
+
+        // Soda POP! music
+        function startSodaMusic() {
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+            danceMusic.pause();
+            danceMusic.currentTime = 0;
+            // Only start if not already playing (keeps music going on replay)
+            if (sodaMusic.paused) {
+                sodaMusic.play();
+            }
+        }
+
+        function stopSodaMusic() {
+            sodaMusic.pause();
+            sodaMusic.currentTime = 0;
+        }
+
+        // Dance Mode Functions
+        function startDanceMode() {
+            demonContainer.innerHTML = '';
+            gameState.danceTargets = [];
+            gameState.currentTargetIndex = 0;
+
+            // Reset hero
+            heroAction.style.left = '50%';
+            heroAction.style.bottom = '20px';
+            heroAction.classList.add('idle');
+
+            // Create dance targets at random positions
+            const positions = generateDancePositions(gameState.totalBeats);
+
+            // Generate random activation order
+            gameState.activationOrder = generateRandomOrder(gameState.totalBeats);
+
+            for (let i = 0; i < gameState.totalBeats; i++) {
+                const target = document.createElement('div');
+                target.className = 'dance-target waiting';
+                target.dataset.index = i;
+
+                // Random dance image (bird or cat)
+                const randomImage = danceImages[Math.floor(Math.random() * danceImages.length)];
+                target.style.backgroundImage = `url('${randomImage}')`;
+
+                // Position from pre-generated array
+                target.style.left = positions[i].x + 'px';
+                target.style.top = positions[i].y + 'px';
+
+                // Add click handler
+                target.addEventListener('click', () => hitDanceTarget(target, i));
+
+                demonContainer.appendChild(target);
+                gameState.danceTargets.push(target);
+            }
+
+            // Start the beat sequence after a short delay
+            setTimeout(() => {
+                activateNextTarget();
+            }, 1000);
+        }
+
+        function generateDancePositions(count) {
+            const positions = [];
+            const padding = 100;
+            const maxX = window.innerWidth - 150;
+            const maxY = window.innerHeight - 280;
+            const minX = padding;
+            const minY = 120;
+
+            // Fully random positions
+            for (let i = 0; i < count; i++) {
+                const x = minX + Math.random() * (maxX - minX);
+                const y = minY + Math.random() * (maxY - minY);
+                positions.push({ x, y });
+            }
+
+            return positions;
+        }
+
+        // Generate random activation order
+        function generateRandomOrder(count) {
+            const order = [];
+            for (let i = 0; i < count; i++) {
+                order.push(i);
+            }
+            // Fisher-Yates shuffle
+            for (let i = order.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [order[i], order[j]] = [order[j], order[i]];
+            }
+            return order;
+        }
+
+        function activateNextTarget() {
+            if (gameState.currentTargetIndex >= gameState.totalBeats) {
+                // All beats done - show win screen
+                setTimeout(showDanceWinScreen, 500);
+                return;
+            }
+
+            // Get the actual target index from the random order
+            const actualIndex = gameState.activationOrder[gameState.currentTargetIndex];
+            const target = gameState.danceTargets[actualIndex];
+            if (!target) return;
+
+            // Activate current target
+            target.classList.remove('waiting');
+            target.classList.add('active');
+
+            // Auto-advance after hit window (shorter = harder!)
+            setTimeout(() => {
+                if (target.classList.contains('active')) {
+                    // They missed it - no penalty, just move on
+                    target.classList.remove('active');
+                    target.classList.add('waiting');
+                    target.style.opacity = '0.15';
+                    gameState.combo = 0;
+                    updateDanceCombo();
+                    gameState.currentTargetIndex++;
+                    activateNextTarget();
+                }
+            }, gameState.danceHitWindow);
+        }
+
+        function hitDanceTarget(target, index) {
+            // Only count hits on the active target
+            const isActive = target.classList.contains('active');
+
+            if (!isActive) return;
+            if (target.classList.contains('hit-perfect') || target.classList.contains('hit-good')) return;
+
+            // Move hero to target
+            const rect = target.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            moveHeroTo(centerX, centerY);
+
+            // Create sparkles
+            createSparkles(centerX, centerY);
+
+            // Determine hit quality (generous for kids!)
+            let hitType = 'perfect';
+            let points = 100;
+
+            // All hits are treated as good for a 5-year-old!
+            target.classList.remove('active', 'waiting');
+            target.classList.add('hit-perfect');
+
+            // Show feedback
+            showDanceFeedback(hitType);
+
+            // Update combo and score
+            gameState.combo++;
+            if (gameState.combo > gameState.maxCombo) {
+                gameState.maxCombo = gameState.combo;
+            }
+            gameState.danceScore += points * (1 + gameState.combo * 0.1);
+
+            updateDanceCombo();
+            updateDanceScore();
+
+            // Move to next target in the random order
+            gameState.currentTargetIndex++;
+
+            // Small delay before next target
+            setTimeout(() => {
+                returnHeroToCenter();
+                setTimeout(activateNextTarget, 300);
+            }, 200);
+        }
+
+        function showDanceFeedback(type) {
+            const feedback = document.createElement('div');
+            feedback.className = 'dance-feedback ' + type;
+
+            const messages = {
+                perfect: ['PERFECT!', 'AMAZING!', 'WOW!', 'SUPERSTAR!'],
+                good: ['GOOD!', 'NICE!', 'YAY!'],
+                nice: ['OK!', 'KEEP GOING!']
+            };
+
+            const msgArray = messages[type] || messages.good;
+            feedback.textContent = msgArray[Math.floor(Math.random() * msgArray.length)];
+
+            document.body.appendChild(feedback);
+
+            setTimeout(() => feedback.remove(), 600);
+        }
+
+        function updateDanceCombo() {
+            if (gameState.combo >= 2) {
+                danceCombo.textContent = `${gameState.combo}x COMBO!`;
+                danceCombo.classList.add('visible');
+            } else {
+                danceCombo.classList.remove('visible');
+            }
+        }
+
+        function updateDanceScore() {
+            scoreDisplay.textContent = `Score: ${Math.floor(gameState.danceScore)}`;
+            scoreDisplay.classList.remove('pop');
+            void scoreDisplay.offsetWidth;
+            scoreDisplay.classList.add('pop');
+        }
+
+        function showDanceWinScreen() {
+            // Keep music playing for replay!
+            stopDemonMovement();
+
+            // Update win screen message for dance mode
+            const winTitle = winScreen.querySelector('h1');
+            winTitle.textContent = `Amazing Dancing! Score: ${Math.floor(gameState.danceScore)}`;
+            winMessage.textContent = getWinMessage();
+
+            gameScreen.style.display = 'none';
+            winScreen.style.display = 'flex';
+            setTimeout(() => {
+                winScreen.classList.add('visible');
+            }, 50);
+        }
+
+        // ========== SODA POP! MODE ==========
+
+        function startSodaMode() {
+            demonContainer.innerHTML = '';
+            gameState.sodaLives = 3;
+            gameState.sodaScore = 0;
+            gameState.sodaBubblesPopped = 0;
+
+            // Reset hero position
+            heroAction.style.left = '50%';
+            heroAction.style.bottom = '20px';
+            heroAction.classList.add('idle');
+
+            // Update display
+            scoreDisplay.textContent = `Bubbles: 0 / ${gameState.sodaTotalBubbles}`;
+            timerDisplay.style.display = 'block';
+            timerDisplay.textContent = '❤️❤️❤️';
+            timerDisplay.classList.remove('warning');
+
+            // Start spawning bubbles
+            spawnBubble();
+        }
+
+        function spawnBubble() {
+            if (gameState.sodaBubblesPopped >= gameState.sodaTotalBubbles) {
+                // Won!
+                setTimeout(showSodaWinScreen, 500);
+                return;
+            }
+
+            if (gameState.sodaLives <= 0) {
+                // Game over - but for a 5 year old, let's just show win screen anyway
+                setTimeout(showSodaWinScreen, 500);
+                return;
+            }
+
+            // Spawn 1-2 bubbles
+            const numBubbles = Math.random() < 0.4 ? 2 : 1;
+
+            for (let i = 0; i < numBubbles; i++) {
+                createBubble(i * 200); // Stagger spawns slightly
+            }
+        }
+
+        function createBubble(delay = 0) {
+            setTimeout(() => {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+
+                // Random size (will grow to this)
+                const size = 80 + Math.random() * 60; // 80-140px
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+
+                // Random position
+                const maxX = window.innerWidth - size - 40;
+                const maxY = window.innerHeight - size - 150;
+                const minX = 40;
+                const minY = 100;
+
+                const x = minX + Math.random() * (maxX - minX);
+                const y = minY + Math.random() * (maxY - minY);
+
+                bubble.style.left = x + 'px';
+                bubble.style.top = y + 'px';
+
+                // Set grow duration (faster = harder)
+                const growTime = gameState.sodaGrowDuration / gameState.speedMultiplier;
+                bubble.style.setProperty('--grow-duration', growTime + 'ms');
+
+                // Click handler - pop the bubble!
+                bubble.addEventListener('click', () => popBubble(bubble));
+
+                demonContainer.appendChild(bubble);
+
+                // If not popped in time, it hurts!
+                bubble.dataset.timeout = setTimeout(() => {
+                    if (!bubble.classList.contains('popped')) {
+                        bubbleHurt(bubble);
+                    }
+                }, growTime);
+
+            }, delay);
+        }
+
+        function popBubble(bubble) {
+            if (bubble.classList.contains('popped')) return;
+
+            // Clear the hurt timeout
+            clearTimeout(parseInt(bubble.dataset.timeout));
+
+            // Pop animation
+            bubble.classList.add('popped');
+
+            // Create pop sparkles
+            const rect = bubble.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            createBubbleSparkles(centerX, centerY);
+
+            // Move hero to bubble and attack!
+            moveHeroTo(centerX, centerY);
+
+            // Show fun feedback
+            showPopFeedback();
+
+            // Update score
+            gameState.sodaBubblesPopped++;
+            gameState.sodaScore += 100 * gameState.speedMultiplier;
+            scoreDisplay.textContent = `Bubbles: ${gameState.sodaBubblesPopped} / ${gameState.sodaTotalBubbles}`;
+            scoreDisplay.classList.remove('pop');
+            void scoreDisplay.offsetWidth;
+            scoreDisplay.classList.add('pop');
+
+            // Remove bubble after animation
+            setTimeout(() => {
+                bubble.remove();
+
+                // Check if we need more bubbles
+                const remainingBubbles = demonContainer.querySelectorAll('.bubble:not(.popped)').length;
+                if (remainingBubbles === 0) {
+                    returnHeroToCenter();
+                    setTimeout(spawnBubble, 500);
+                }
+            }, 300);
+        }
+
+        function showPopFeedback() {
+            const messages = ['POP!', 'NICE!', 'YAY!', 'WOOHOO!', 'AWESOME!', 'SPLASH!'];
+            const feedback = document.createElement('div');
+            feedback.className = 'dance-feedback perfect'; // Reuse dance feedback styles
+            feedback.textContent = messages[Math.floor(Math.random() * messages.length)];
+            document.body.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 600);
+        }
+
+        function bubbleHurt(bubble) {
+            // Bubble wasn't popped in time!
+            bubble.classList.add('popped');
+            bubble.remove();
+
+            // Lose a life
+            gameState.sodaLives--;
+            updateLivesDisplay();
+
+            // Show hurt effect
+            showHurtEffect();
+
+            // Check for game over or spawn more
+            if (gameState.sodaLives <= 0) {
+                setTimeout(showSodaWinScreen, 800);
+            } else {
+                const remainingBubbles = demonContainer.querySelectorAll('.bubble:not(.popped)').length;
+                if (remainingBubbles === 0) {
+                    setTimeout(spawnBubble, 800);
+                }
+            }
+        }
+
+        function updateLivesDisplay() {
+            const hearts = '❤️'.repeat(gameState.sodaLives) + '🖤'.repeat(3 - gameState.sodaLives);
+            timerDisplay.textContent = hearts;
+            if (gameState.sodaLives <= 1) {
+                timerDisplay.classList.add('warning');
+            }
+        }
+
+        function showHurtEffect() {
+            // Red flash
+            const flash = document.createElement('div');
+            flash.className = 'hurt-flash';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.remove(), 400);
+
+            // Pain text
+            const painWords = ['OW!', 'OUCH!', 'YIKES!', 'EEK!', 'OH NO!'];
+            const text = document.createElement('div');
+            text.className = 'hurt-text';
+            text.textContent = painWords[Math.floor(Math.random() * painWords.length)];
+            document.body.appendChild(text);
+            setTimeout(() => text.remove(), 600);
+        }
+
+        function createBubbleSparkles(x, y) {
+            const colors = ['#ff69b4', '#ff1493', '#ff00ff', '#ffffff', '#ffb6c1'];
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+
+                const offsetX = (Math.random() - 0.5) * 100;
+                const offsetY = (Math.random() - 0.5) * 100;
+
+                sparkle.style.left = (x + offsetX) + 'px';
+                sparkle.style.top = (y + offsetY) + 'px';
+                sparkle.style.background = `radial-gradient(circle, ${colors[Math.floor(Math.random() * colors.length)]} 0%, transparent 70%)`;
+
+                demonContainer.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 350);
+            }
+        }
+
+        function showSodaWinScreen() {
+            // Stop any remaining bubble timeouts
+            const bubbles = demonContainer.querySelectorAll('.bubble');
+            bubbles.forEach(b => {
+                clearTimeout(parseInt(b.dataset.timeout));
+                b.remove();
+            });
+
+            // Update win screen message
+            const winTitle = winScreen.querySelector('h1');
+            if (gameState.sodaLives > 0) {
+                winTitle.textContent = `POP STAR! Score: ${Math.floor(gameState.sodaScore)}`;
+            } else {
+                winTitle.textContent = `Good Try! Score: ${Math.floor(gameState.sodaScore)}`;
+            }
+            winMessage.textContent = getWinMessage();
+
+            gameScreen.style.display = 'none';
+            winScreen.style.display = 'flex';
+            setTimeout(() => {
+                winScreen.classList.add('visible');
+            }, 50);
+        }
+
+        // ========== END SODA POP! MODE ==========
 
         function showWinScreen() {
             // Stop the timer and demon movement
             stopTimer();
             stopDemonMovement();
+
+            // Reset win screen message for demon mode
+            const winTitle = winScreen.querySelector('h1');
+            winTitle.textContent = 'You defeated all the demons!';
+            winMessage.textContent = getWinMessage();
 
             gameScreen.style.display = 'none';
             winScreen.style.display = 'flex';
@@ -684,10 +1707,79 @@
         playAgainButton.addEventListener('click', playAgain);
 
         function playAgain() {
+            // Reset speed when playing again normally
+            gameState.speedMultiplier = 1;
+            gameState.danceHitWindow = 2000;
+            gameState.sodaGrowDuration = 5000;
+
             winScreen.classList.remove('visible');
             winScreen.style.display = 'none';
-            startGame();
+
+            if (gameState.gameMode === 'dance') {
+                // Replay dance mode directly (music keeps playing!)
+                startGame('dance');
+            } else if (gameState.gameMode === 'soda') {
+                // Replay soda mode directly (music keeps playing!)
+                startGame('soda');
+            } else {
+                // For demon mode, go back to mode selection
+                timerDisplay.style.display = 'block';
+                modeScreen.style.display = 'flex';
+            }
         }
+
+        // Harder/Faster button
+        const harderButton = document.getElementById('harder-button');
+        harderButton.addEventListener('click', playHarder);
+
+        function playHarder() {
+            // Increase speed! (doubles each time, capped at 4x)
+            gameState.speedMultiplier = Math.min(gameState.speedMultiplier * 2, 4);
+            // Reduce dance hit window (halves each time, min 500ms)
+            gameState.danceHitWindow = Math.max(gameState.danceHitWindow / 2, 500);
+
+            winScreen.classList.remove('visible');
+            winScreen.style.display = 'none';
+
+            // Replay the same mode but faster!
+            startGame(gameState.gameMode);
+        }
+
+        // Home/New Game button
+        const homeButton = document.getElementById('home-button');
+        homeButton.addEventListener('click', goHome);
+
+        function goHome() {
+            // Reset everything and go back to mode selection
+            gameState.speedMultiplier = 1;
+            gameState.danceHitWindow = 2000;
+            gameState.sodaGrowDuration = 5000;
+
+            // Stop all music
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+            danceMusic.pause();
+            danceMusic.currentTime = 0;
+            sodaMusic.pause();
+            sodaMusic.currentTime = 0;
+
+            winScreen.classList.remove('visible');
+            winScreen.style.display = 'none';
+            timerDisplay.style.display = 'block';
+            heroAction.style.display = 'block'; // Restore hero visibility
+
+            // Show mode selection
+            modeScreen.style.display = 'flex';
+        }
+
+        // Pause music when app is minimized
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                backgroundMusic.pause();
+                danceMusic.pause();
+                sodaMusic.pause();
+            }
+        });
     </script>
 </body>
 </html>
