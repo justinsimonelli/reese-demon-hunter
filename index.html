@@ -343,56 +343,79 @@
             height: 100%;
             display: none;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             z-index: 200;
             background: rgba(0, 0, 0, 0.8);
             opacity: 0;
             transition: opacity 1s ease-in;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px 10px;
+            padding-top: max(20px, env(safe-area-inset-top));
+            padding-bottom: max(20px, env(safe-area-inset-bottom));
+            -webkit-overflow-scrolling: touch;
         }
 
         #win-screen.visible {
             opacity: 1;
         }
 
+        /* Wrapper to center content when there's room, align to top when scrolling needed */
+        #win-screen::before {
+            content: '';
+            flex: 1;
+            min-height: 10px;
+        }
+
+        #win-screen::after {
+            content: '';
+            flex: 1;
+            min-height: 10px;
+        }
+
         #win-screen h1 {
             font-family: 'KpopHunters', 'Bangers', 'Bebas Neue', sans-serif;
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
             color: #fff;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            margin-bottom: 20px;
-            padding: 0 20px;
+            margin-bottom: 10px;
+            padding: 0 15px;
+            flex-shrink: 0;
         }
 
         #win-screen p {
             font-family: 'Bangers', 'Bebas Neue', sans-serif;
-            font-size: 2rem;
+            font-size: clamp(1.2rem, 4vw, 2rem);
             color: #ff6b9d;
             text-align: center;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            margin-bottom: 40px;
-            padding: 0 20px;
+            margin-bottom: 15px;
+            padding: 0 15px;
+            flex-shrink: 0;
         }
 
         #win-screen .hero-image {
-            max-width: 250px;
-            max-height: 30vh;
+            max-width: min(200px, 40vw);
+            max-height: 20vh;
             border-radius: 20px;
             box-shadow: 0 0 40px rgba(255, 235, 59, 0.6);
-            margin-bottom: 30px;
+            margin-bottom: 15px;
+            flex-shrink: 0;
         }
 
         .win-buttons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px;
             align-items: center;
+            flex-shrink: 0;
         }
 
         #play-again-button {
-            padding: 20px 50px;
-            font-size: 1.8rem;
+            padding: 15px 40px;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
             font-family: 'Bangers', sans-serif;
             background: linear-gradient(45deg, #ffeb3b, #ff9800);
             color: #1a1a2e;
@@ -411,8 +434,8 @@
         }
 
         #harder-button {
-            padding: 15px 40px;
-            font-size: 1.4rem;
+            padding: 12px 30px;
+            font-size: clamp(1rem, 3vw, 1.4rem);
             font-family: 'Bangers', sans-serif;
             background: linear-gradient(45deg, #00e676, #00bfa5);
             color: #1a1a2e;
@@ -431,8 +454,8 @@
         }
 
         #home-button {
-            padding: 12px 35px;
-            font-size: 1.2rem;
+            padding: 10px 25px;
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
             font-family: 'Bangers', sans-serif;
             background: linear-gradient(45deg, #ab47bc, #7c4dff);
             color: white;
@@ -442,13 +465,42 @@
             box-shadow: 0 6px 20px rgba(171, 71, 188, 0.5);
             transition: transform 0.2s, box-shadow 0.2s;
             -webkit-tap-highlight-color: transparent;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         #home-button:hover,
         #home-button:active {
             transform: scale(1.1);
             box-shadow: 0 10px 30px rgba(171, 71, 188, 0.7);
+        }
+
+        /* Very small screens (landscape phone) */
+        @media (max-height: 500px) {
+            #win-screen .hero-image {
+                max-height: 15vh;
+                max-width: 100px;
+                margin-bottom: 10px;
+            }
+            #win-screen h1 {
+                font-size: 1.3rem;
+                margin-bottom: 5px;
+            }
+            #win-screen p {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+            .win-buttons {
+                gap: 8px;
+            }
+            #play-again-button {
+                padding: 10px 30px;
+            }
+            #harder-button {
+                padding: 8px 25px;
+            }
+            #home-button {
+                padding: 8px 20px;
+            }
         }
 
         @keyframes pulse {
@@ -730,6 +782,33 @@
             font-family: 'Bangers', sans-serif;
             text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
         }
+
+        /* Back/Home button during gameplay */
+        #back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 60;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        #back-button:hover,
+        #back-button:active {
+            transform: scale(1.1);
+            background: rgba(255, 107, 157, 0.7);
+        }
     </style>
 </head>
 <body>
@@ -761,6 +840,7 @@
 
     <!-- Game Screen -->
     <div id="game-screen">
+        <button id="back-button">✕</button>
         <div id="hud">
             <div id="timer-display">60s</div>
             <div id="score-display">Demons: 0 / 10</div>
@@ -843,6 +923,7 @@
         const backgroundMusic = document.getElementById('background-music');
         const danceMusic = document.getElementById('dance-music');
         const sodaMusic = document.getElementById('soda-music');
+        const backButton = document.getElementById('back-button');
 
         // Check if today is her birthday (April 16)
         function isBirthday() {
@@ -903,53 +984,98 @@
             backgroundMusic.pause();
         }
 
-        // Spawn demons at random positions
+        // Spawn demons - 3 at a time until 15 total defeated
         function spawnDemons() {
             demonContainer.innerHTML = '';
+
+            // Total demons to defeat and how many visible at once
+            gameState.totalDemons = 15;
+            gameState.maxVisibleDemons = 3;
+            gameState.demonsSpawned = 0;
 
             // Reset hero position
             heroAction.style.left = '50%';
             heroAction.style.bottom = '20px';
             heroAction.classList.add('idle');
 
-            for (let i = 0; i < gameState.totalDemons; i++) {
+            // Spawn initial batch
+            for (let i = 0; i < gameState.maxVisibleDemons; i++) {
+                spawnSingleDemon(i * 100); // Stagger spawns slightly
+            }
+
+            // Start demon movement
+            startDemonMovement();
+        }
+
+        function spawnSingleDemon(delay = 0) {
+            if (gameState.demonsSpawned >= gameState.totalDemons) return;
+
+            setTimeout(() => {
                 const demon = document.createElement('div');
                 demon.className = 'demon';
-                demon.dataset.id = i;
+                demon.dataset.id = gameState.demonsSpawned;
 
                 // Random demon image
                 const randomDemon = demonImages[Math.floor(Math.random() * demonImages.length)];
                 demon.style.backgroundImage = `url('${randomDemon}')`;
 
-                // Random position (avoid edges and bottom where hero is)
-                const maxX = window.innerWidth - 120;
-                const maxY = window.innerHeight - 250; // Leave room for hero
-                const minY = 80; // Leave room for score
+                // Random position (avoiding other demons)
+                const pos = getRandomDemonPosition();
+                demon.style.left = pos.x + 'px';
+                demon.style.top = pos.y + 'px';
 
-                const randomX = Math.random() * maxX + 10;
-                const randomY = Math.random() * (maxY - minY) + minY;
-
-                demon.style.left = randomX + 'px';
-                demon.style.top = randomY + 'px';
-
-                // Random velocity for movement (speed between 1-3, multiplied by difficulty)
+                // Random velocity for movement
                 const baseSpeed = 1 + Math.random() * 2;
                 const speed = baseSpeed * gameState.speedMultiplier;
                 const angle = Math.random() * Math.PI * 2;
                 demon.dataset.vx = Math.cos(angle) * speed;
                 demon.dataset.vy = Math.sin(angle) * speed;
 
-                // Staggered spawn animation
-                demon.style.animationDelay = `${i * 0.1}s`;
-
-                // Add click/tap handler to defeat demon
+                // Add click/tap handler
                 demon.addEventListener('click', () => defeatDemon(demon));
 
                 demonContainer.appendChild(demon);
+                gameState.demonsSpawned++;
+            }, delay);
+        }
+
+        function getRandomDemonPosition() {
+            const demonSize = 100;
+            const padding = 20;
+            const minX = padding;
+            const minY = 80;
+            const maxX = window.innerWidth - demonSize - padding;
+            const maxY = window.innerHeight - demonSize - 200;
+
+            // Try to find a non-overlapping position
+            for (let attempts = 0; attempts < 10; attempts++) {
+                const x = minX + Math.random() * (maxX - minX);
+                const y = minY + Math.random() * (maxY - minY);
+
+                // Check against existing demons
+                const existingDemons = demonContainer.querySelectorAll('.demon:not(.defeated)');
+                let overlaps = false;
+
+                for (const existing of existingDemons) {
+                    const ex = parseFloat(existing.style.left);
+                    const ey = parseFloat(existing.style.top);
+                    const distance = Math.sqrt((x - ex) ** 2 + (y - ey) ** 2);
+                    if (distance < demonSize + 20) {
+                        overlaps = true;
+                        break;
+                    }
+                }
+
+                if (!overlaps) {
+                    return { x, y };
+                }
             }
 
-            // Start demon movement
-            startDemonMovement();
+            // Fallback to random position
+            return {
+                x: minX + Math.random() * (maxX - minX),
+                y: minY + Math.random() * (maxY - minY)
+            };
         }
 
         // Move demons around the screen
@@ -1076,7 +1202,7 @@
             gameState.demonsDefeated++;
             updateScore();
 
-            // Remove after animation completes (faster timing)
+            // Remove after animation completes
             setTimeout(() => {
                 demon.remove();
 
@@ -1084,8 +1210,9 @@
                 if (gameState.demonsDefeated >= gameState.totalDemons) {
                     setTimeout(showWinScreen, 200);
                 } else {
-                    // Return hero to center immediately
+                    // Return hero to center and spawn next demon
                     returnHeroToCenter();
+                    spawnSingleDemon();
                 }
             }, 250);
         }
@@ -1174,6 +1301,44 @@
             startGame('soda');
         });
 
+        // Back button during gameplay - returns to mode selection
+        backButton.addEventListener('click', quitToMenu);
+
+        function quitToMenu() {
+            // Stop all game activities
+            stopTimer();
+            stopDemonMovement();
+            stopDanceMovement();
+
+            // Stop any soda bubble timeouts
+            const bubbles = demonContainer.querySelectorAll('.bubble');
+            bubbles.forEach(b => {
+                clearTimeout(parseInt(b.dataset.timeout));
+                b.remove();
+            });
+
+            // Clear any remaining elements
+            demonContainer.innerHTML = '';
+
+            // Stop all music
+            backgroundMusic.pause();
+            backgroundMusic.currentTime = 0;
+            danceMusic.pause();
+            danceMusic.currentTime = 0;
+            sodaMusic.pause();
+            sodaMusic.currentTime = 0;
+
+            // Reset state
+            gameState.speedMultiplier = 1;
+            gameState.danceHitWindow = 2000;
+            gameState.sodaGrowDuration = 5000;
+
+            // Hide game screen and show mode selection
+            gameScreen.style.display = 'none';
+            timerDisplay.style.display = 'block';
+            modeScreen.style.display = 'flex';
+        }
+
         function startGame(mode) {
             gameState.gameMode = mode;
 
@@ -1196,10 +1361,10 @@
                 heroAction.style.display = 'block';
                 timerDisplay.style.display = 'block';
                 danceCombo.classList.remove('visible');
-                updateScore();
                 startMusic();
                 startTimer();
                 spawnDemons();
+                updateScore(); // After spawnDemons so dynamic count is set
             } else if (mode === 'dance') {
                 // Dance mode - city background
                 document.body.style.backgroundImage = "url('images/city.png')";
@@ -1259,152 +1424,189 @@
             demonContainer.innerHTML = '';
             gameState.danceTargets = [];
             gameState.currentTargetIndex = 0;
+            gameState.danceTargetsHit = 0;
+            gameState.danceTargetsSpawned = 0;
+
+            // Total targets to complete and how many visible at once
+            gameState.totalBeats = 15;
+            gameState.maxVisibleTargets = 3;
 
             // Reset hero
             heroAction.style.left = '50%';
             heroAction.style.bottom = '20px';
             heroAction.classList.add('idle');
 
-            // Create dance targets at random positions
-            const positions = generateDancePositions(gameState.totalBeats);
+            // Update score display
+            scoreDisplay.textContent = `Score: 0 (0/${gameState.totalBeats})`;
 
-            // Generate random activation order
-            gameState.activationOrder = generateRandomOrder(gameState.totalBeats);
-
-            for (let i = 0; i < gameState.totalBeats; i++) {
-                const target = document.createElement('div');
-                target.className = 'dance-target waiting';
-                target.dataset.index = i;
-
-                // Random dance image (bird or cat)
-                const randomImage = danceImages[Math.floor(Math.random() * danceImages.length)];
-                target.style.backgroundImage = `url('${randomImage}')`;
-
-                // Position from pre-generated array
-                target.style.left = positions[i].x + 'px';
-                target.style.top = positions[i].y + 'px';
-
-                // Add click handler
-                target.addEventListener('click', () => hitDanceTarget(target, i));
-
-                demonContainer.appendChild(target);
-                gameState.danceTargets.push(target);
-            }
-
-            // Start the beat sequence after a short delay
+            // Spawn initial batch of targets after a short delay
             setTimeout(() => {
-                activateNextTarget();
-            }, 1000);
+                for (let i = 0; i < gameState.maxVisibleTargets; i++) {
+                    spawnDanceTarget();
+                }
+                // Start the floating movement
+                startDanceMovement();
+            }, 500);
         }
 
-        function generateDancePositions(count) {
-            const positions = [];
-            const padding = 100;
-            const maxX = window.innerWidth - 150;
-            const maxY = window.innerHeight - 280;
-            const minX = padding;
-            const minY = 120;
+        function spawnDanceTarget() {
+            if (gameState.danceTargetsSpawned >= gameState.totalBeats) return;
 
-            // Fully random positions
-            for (let i = 0; i < count; i++) {
+            const target = document.createElement('div');
+            target.className = 'dance-target active';
+            target.dataset.index = gameState.danceTargetsSpawned;
+
+            // Random dance image (bird or cat)
+            const randomImage = danceImages[Math.floor(Math.random() * danceImages.length)];
+            target.style.backgroundImage = `url('${randomImage}')`;
+
+            // Random position (avoiding other active targets)
+            const pos = getRandomDancePosition();
+            target.style.left = pos.x + 'px';
+            target.style.top = pos.y + 'px';
+
+            // Random velocity for floating movement
+            const baseSpeed = 1 + Math.random() * 2;
+            const speed = baseSpeed * gameState.speedMultiplier;
+            const angle = Math.random() * Math.PI * 2;
+            target.dataset.vx = Math.cos(angle) * speed;
+            target.dataset.vy = Math.sin(angle) * speed;
+
+            // Add click handler
+            target.addEventListener('click', () => hitDanceTarget(target));
+
+            demonContainer.appendChild(target);
+            gameState.danceTargets.push(target);
+            gameState.danceTargetsSpawned++;
+        }
+
+        // Move dance targets around the screen
+        function startDanceMovement() {
+            stopDanceMovement();
+
+            gameState.danceTargetMoveInterval = setInterval(() => {
+                const targets = demonContainer.querySelectorAll('.dance-target.active');
+                const targetSize = 120;
+                const maxX = window.innerWidth - targetSize - 20;
+                const maxY = window.innerHeight - targetSize - 200;
+                const minX = 20;
+                const minY = 100;
+
+                targets.forEach(target => {
+                    let x = parseFloat(target.style.left);
+                    let y = parseFloat(target.style.top);
+                    let vx = parseFloat(target.dataset.vx);
+                    let vy = parseFloat(target.dataset.vy);
+
+                    // Update position
+                    x += vx;
+                    y += vy;
+
+                    // Bounce off edges
+                    if (x <= minX || x >= maxX) {
+                        vx = -vx;
+                        x = Math.max(minX, Math.min(maxX, x));
+                    }
+                    if (y <= minY || y >= maxY) {
+                        vy = -vy;
+                        y = Math.max(minY, Math.min(maxY, y));
+                    }
+
+                    // Save new values
+                    target.style.left = x + 'px';
+                    target.style.top = y + 'px';
+                    target.dataset.vx = vx;
+                    target.dataset.vy = vy;
+                });
+            }, 30);
+        }
+
+        function stopDanceMovement() {
+            if (gameState.danceTargetMoveInterval) {
+                clearInterval(gameState.danceTargetMoveInterval);
+                gameState.danceTargetMoveInterval = null;
+            }
+        }
+
+        function getRandomDancePosition() {
+            const targetSize = 120;
+            const padding = 20;
+            const minX = padding;
+            const minY = 100;
+            const maxX = window.innerWidth - targetSize - padding;
+            const maxY = window.innerHeight - targetSize - 200;
+
+            // Try to find a non-overlapping position
+            for (let attempts = 0; attempts < 10; attempts++) {
                 const x = minX + Math.random() * (maxX - minX);
                 const y = minY + Math.random() * (maxY - minY);
-                positions.push({ x, y });
-            }
 
-            return positions;
-        }
+                // Check against existing active targets
+                const existingTargets = demonContainer.querySelectorAll('.dance-target');
+                let overlaps = false;
 
-        // Generate random activation order
-        function generateRandomOrder(count) {
-            const order = [];
-            for (let i = 0; i < count; i++) {
-                order.push(i);
-            }
-            // Fisher-Yates shuffle
-            for (let i = order.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [order[i], order[j]] = [order[j], order[i]];
-            }
-            return order;
-        }
-
-        function activateNextTarget() {
-            if (gameState.currentTargetIndex >= gameState.totalBeats) {
-                // All beats done - show win screen
-                setTimeout(showDanceWinScreen, 500);
-                return;
-            }
-
-            // Get the actual target index from the random order
-            const actualIndex = gameState.activationOrder[gameState.currentTargetIndex];
-            const target = gameState.danceTargets[actualIndex];
-            if (!target) return;
-
-            // Activate current target
-            target.classList.remove('waiting');
-            target.classList.add('active');
-
-            // Auto-advance after hit window (shorter = harder!)
-            setTimeout(() => {
-                if (target.classList.contains('active')) {
-                    // They missed it - no penalty, just move on
-                    target.classList.remove('active');
-                    target.classList.add('waiting');
-                    target.style.opacity = '0.15';
-                    gameState.combo = 0;
-                    updateDanceCombo();
-                    gameState.currentTargetIndex++;
-                    activateNextTarget();
+                for (const existing of existingTargets) {
+                    const ex = parseFloat(existing.style.left);
+                    const ey = parseFloat(existing.style.top);
+                    const distance = Math.sqrt((x - ex) ** 2 + (y - ey) ** 2);
+                    if (distance < targetSize + 20) {
+                        overlaps = true;
+                        break;
+                    }
                 }
-            }, gameState.danceHitWindow);
+
+                if (!overlaps) {
+                    return { x, y };
+                }
+            }
+
+            // Fallback to random position if we couldn't find non-overlapping
+            return {
+                x: minX + Math.random() * (maxX - minX),
+                y: minY + Math.random() * (maxY - minY)
+            };
         }
 
-        function hitDanceTarget(target, index) {
-            // Only count hits on the active target
-            const isActive = target.classList.contains('active');
+        function hitDanceTarget(target) {
+            // Only count hits on active targets
+            if (!target.classList.contains('active')) return;
+            if (target.classList.contains('hit-perfect')) return;
 
-            if (!isActive) return;
-            if (target.classList.contains('hit-perfect') || target.classList.contains('hit-good')) return;
-
-            // Move hero to target
+            // Get position for sparkles and hero movement
             const rect = target.getBoundingClientRect();
             const centerX = rect.left + rect.width / 2;
             const centerY = rect.top + rect.height / 2;
+
+            // Move hero to target
             moveHeroTo(centerX, centerY);
+
+            // Add hit animation
+            target.classList.remove('active');
+            target.classList.add('hit-perfect');
 
             // Create sparkles
             createSparkles(centerX, centerY);
 
-            // Determine hit quality (generous for kids!)
-            let hitType = 'perfect';
-            let points = 100;
+            // Show fun feedback
+            showDanceFeedback('perfect');
 
-            // All hits are treated as good for a 5-year-old!
-            target.classList.remove('active', 'waiting');
-            target.classList.add('hit-perfect');
-
-            // Show feedback
-            showDanceFeedback(hitType);
-
-            // Update combo and score
-            gameState.combo++;
-            if (gameState.combo > gameState.maxCombo) {
-                gameState.maxCombo = gameState.combo;
-            }
-            gameState.danceScore += points * (1 + gameState.combo * 0.1);
-
-            updateDanceCombo();
+            // Update score
+            gameState.danceTargetsHit++;
             updateDanceScore();
 
-            // Move to next target in the random order
-            gameState.currentTargetIndex++;
-
-            // Small delay before next target
+            // Remove target after animation
             setTimeout(() => {
-                returnHeroToCenter();
-                setTimeout(activateNextTarget, 300);
-            }, 200);
+                target.remove();
+
+                // Check for win
+                if (gameState.danceTargetsHit >= gameState.totalBeats) {
+                    setTimeout(showDanceWinScreen, 200);
+                } else {
+                    // Return hero to center and spawn next target
+                    returnHeroToCenter();
+                    spawnDanceTarget();
+                }
+            }, 250);
         }
 
         function showDanceFeedback(type) {
@@ -1435,7 +1637,7 @@
         }
 
         function updateDanceScore() {
-            scoreDisplay.textContent = `Score: ${Math.floor(gameState.danceScore)}`;
+            scoreDisplay.textContent = `Score: ${Math.floor(gameState.danceScore)} (${gameState.danceTargetsHit}/${gameState.totalBeats})`;
             scoreDisplay.classList.remove('pop');
             void scoreDisplay.offsetWidth;
             scoreDisplay.classList.add('pop');
@@ -1443,7 +1645,7 @@
 
         function showDanceWinScreen() {
             // Keep music playing for replay!
-            stopDemonMovement();
+            stopDanceMovement();
 
             // Update win screen message for dance mode
             const winTitle = winScreen.querySelector('h1');
