@@ -1061,6 +1061,31 @@ function showSodaWinScreen() {
 
 // ========== RUNNER MODE (MARIO-STYLE SIDE SCROLLER) ==========
 
+// Get dynamic ground level based on viewport height (matches CSS media query)
+function getRunnerGroundLevel() {
+    return window.innerHeight <= 450 ? 50 : 100;
+}
+
+// Get scaled heights for obstacles/collectibles based on viewport
+function getRunnerHeights() {
+    const isMobile = window.innerHeight <= 450;
+    return {
+        ground: isMobile ? 50 : 100,
+        playerHeight: isMobile ? 100 : 150,
+        // Ground obstacles - just above ground
+        groundObstacle: isMobile ? 50 : 100,
+        // Air obstacles - above player's head when standing
+        airObstacles: isMobile ? [140, 160, 180, 200] : [280, 300, 320, 340],
+        // Mix heights weighted toward ground
+        mixedObstacles: isMobile ? [50, 50, 50, 160, 180] : [100, 100, 100, 300, 320],
+        // Collectible heights
+        groundCollectible: isMobile ? 60 : 120,
+        airCollectibles: isMobile ? [60, 90, 120] : [120, 160, 200],
+        // Max jump height cap
+        maxHeight: isMobile ? 80 : 140
+    };
+}
+
 function startRunnerMode() {
     demonContainer.innerHTML = '';
 
@@ -1157,12 +1182,13 @@ function handleRunnerJumpStart(e) {
         player.classList.remove('running');
         player.classList.add('jumping');
 
-        // Jump physics
-        const groundLevel = 100;
+        // Jump physics - use dynamic values based on viewport
+        const heights = getRunnerHeights();
+        const groundLevel = heights.ground;
         const jumpVelocity = 12;
         const floatGravity = 0.15;   // Very slow fall when holding
         const fallGravity = 1.2;     // Fast fall when released
-        const maxHeight = 140;       // Cap height so she can't fly too high
+        const maxHeight = heights.maxHeight;  // Cap height so she can't fly too high
 
         let velocity = jumpVelocity;
         let currentHeight = 0;
@@ -1286,19 +1312,16 @@ function spawnRunnerObstacle() {
     const randomDemon = demonImages[Math.floor(Math.random() * demonImages.length)];
     obstacle.style.backgroundImage = `url('${randomDemon}')`;
 
-    // Spawn demons at different heights
-    // Ground demons: 100px (she can jump over)
-    // Air demons: 280-320px (safely above her head on ground, but hits her if floating)
-    // Player is 150px tall at bottom:100px, so top is ~250px. Demons need to be above that.
+    // Spawn demons at different heights - use dynamic values based on viewport
+    const runnerHeights = getRunnerHeights();
     let height;
     if (gameState.runnerFloating || gameState.runnerJumping) {
         // Player is floating - spawn demons at floating height to chase her down!
-        // These are safely above her when standing, but will hit her if she's floating
-        const floatHeights = [280, 300, 320, 340];
+        const floatHeights = runnerHeights.airObstacles;
         height = floatHeights[Math.floor(Math.random() * floatHeights.length)];
     } else {
         // Mix of ground demons (jump over) and high demons (walk under)
-        const heights = [100, 100, 100, 300, 320]; // Weighted toward ground
+        const heights = runnerHeights.mixedObstacles;
         height = heights[Math.floor(Math.random() * heights.length)];
     }
 
@@ -1328,14 +1351,15 @@ function spawnRunnerCollectible() {
     collectible.style.backgroundImage = `url('${randomRamen}')`;
 
     // If player is floating, put collectibles on the ground to encourage landing
-    // Otherwise mix of ground and air
+    // Otherwise mix of ground and air - use dynamic values based on viewport
+    const runnerHeights = getRunnerHeights();
     let height;
     if (gameState.runnerFloating || gameState.runnerJumping) {
         // Player is in the air - put ramen on ground!
-        height = 120;
+        height = runnerHeights.groundCollectible;
     } else {
         // Player is on ground - put some ramen in the air
-        const heights = [120, 160, 200];
+        const heights = runnerHeights.airCollectibles;
         height = heights[Math.floor(Math.random() * heights.length)];
     }
 

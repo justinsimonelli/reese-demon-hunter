@@ -1078,3 +1078,30 @@ body {
     0% { opacity: 0; }
     100% { opacity: 1; }
 }
+
+/* Mobile landscape - smaller ground for runner game */
+@media (max-height: 450px) {
+    #runner-ground {
+        height: 50px;
+    }
+
+    #runner-player {
+        bottom: 50px;
+        width: 80px;
+        height: 100px;
+    }
+
+    .runner-obstacle {
+        bottom: 50px;
+    }
+
+    .runner-obstacle.demon-obstacle {
+        width: 70px;
+        height: 80px;
+    }
+
+    .runner-collectible {
+        width: 55px;
+        height: 55px;
+    }
+}
